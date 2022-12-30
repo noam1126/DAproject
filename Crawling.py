@@ -24,11 +24,12 @@ for i in range(1,3):
          names.append(data.find("h3",attrs={"class":"title"}).text)
          price.append(data.find("span",attrs={"class":"price"}).text)
          score.append(data.find("span", attrs={"class": "rating"}).text)
-         #response2 = requests.get(url3.get('href'), headers={'User-Agent': random.choice(user_agents_list)})
-         #soup2 = BeautifulSoup(response2.content, "html.parser")
-         #alcohol.append(soup2.find("div",attrs={"class":"info small-9 columns"}))
+         url3=data['href']
+         response2 = requests.get(url3, headers={'User-Agent': random.choice(user_agents_list)})
+         soup2 = BeautifulSoup(response2.content, "html.parser")
+         alcohol.append(soup2.find("div",attrs={"class":"info small-9 columns"}).text)
 
-data={'Name':names,'Price':price,'Score':score}
+data={'Name':names,'Price':price,'Score':score,'Alcohol':alcohol}
 df = pd.DataFrame(data)
 print(df)
 
