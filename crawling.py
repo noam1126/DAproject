@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import random
 import pandas as pd
+import re
 
 user_agent = user_agents_list = [
     'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
@@ -21,7 +22,8 @@ for i in range(1,3):
      soup1 = BeautifulSoup(response1.content, "html.parser")
      infos=soup1.findAll("a",attrs={"class":"review-listing row"})
      for data in infos:
-         names.append(data.find("h3",attrs={"class":"title"}).text)
+         this_name=data.find("h3",attrs={"class":"title"}).text
+         names.append(this_name)
          price.append(data.find("span",attrs={"class":"price"}).text)
          score.append(data.find("span", attrs={"class": "rating"}).text)
          url3=data['href']
