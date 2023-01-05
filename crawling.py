@@ -37,7 +37,7 @@ for i in range(1,2):
          bottle.append(soup2.findAll("div",attrs={"class":"info small-9 columns"})[1].text)
          category.append(soup2.findAll("div",attrs={"class":"info small-9 columns"})[2].text)
          fromPlace.append(soup2.findAll("div",attrs={"class":"info medium-9 columns"})[3].text)
-         winery.append(soup2.findAll("div",attrs={"class":"info medium-9 columns"})[4].text)
+         #winery.append(soup2.findAll("div",attrs={"class":"info medium-9 columns"})[4].text)
 
 data={'Name':names,'Price':price,'Score':score,'Alcohol':alcohol,'Bottle':bottle,'Category':category,'From':fromPlace,'Winery':winery}
 df = pd.DataFrame(data)
