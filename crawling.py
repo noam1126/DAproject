@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import random
 import pandas as pd
+import re
 
 user_agent = user_agents_list = [
     'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
@@ -13,9 +14,14 @@ names=[]
 price=[]
 score=[]
 alcohol=[]
+year=[]
+bottle=[]
+category=[]
+winery=[]
 count=0
+fromPlace=[]
 
-for i in range(1,3):
+for i in range(1,2):
      url2=url1+str(i)+"&search_type=reviews"
      response1 = requests.get(url2,headers={'User-Agent': random.choice(user_agents_list)})
      soup1 = BeautifulSoup(response1.content, "html.parser")
@@ -28,8 +34,16 @@ for i in range(1,3):
          response2 = requests.get(url3, headers={'User-Agent': random.choice(user_agents_list)})
          soup2 = BeautifulSoup(response2.content, "html.parser")
          alcohol.append(soup2.find("div",attrs={"class":"info small-9 columns"}).text)
+         bottle.append(soup2.findAll("div",attrs={"class":"info small-9 columns"})[1].text)
+         category.append(soup2.findAll("div",attrs={"class":"info small-9 columns"})[2].text)
+         fromPlace.append(soup2.findAll("div",attrs={"class":"info medium-9 columns"})[3].text)
+         #winery.append(soup2.findAll("div",attrs={"class":"info medium-9 columns"})[4].text)
 
-data={'Name':names,'Price':price,'Score':score,'Alcohol':alcohol}
+data={'Name':names,'Price':price,'Score':score,'Alcohol':alcohol,'Bottle':bottle,'Category':category,'From':fromPlace,'Winery':winery}
+
 df = pd.DataFrame(data)
+df['Year']=df['Name'].str.findall('\d+').str[0].astype('Int64')
+df['Alcohol']=df['Alcohol'].str.findall('\d+').str[0].astype('float')
+df['Bottle']=df['Bottle'].str.findall('\d+').str[0].astype('Int64')
 print(df)
 
