@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import random
 import pandas as pd
+import os
 import re
 
 user_agent = user_agents_list = [
@@ -18,10 +19,11 @@ year=[]
 bottle=[]
 category=[]
 winery=[]
+variety=[]
 count=0
 fromPlace=[]
 
-for i in range(1,2):
+for i in range(1,350):
      url2=url1+str(i)+"&search_type=reviews"
      response1 = requests.get(url2,headers={'User-Agent': random.choice(user_agents_list)})
      soup1 = BeautifulSoup(response1.content, "html.parser")
@@ -34,16 +36,30 @@ for i in range(1,2):
          response2 = requests.get(url3, headers={'User-Agent': random.choice(user_agents_list)})
          soup2 = BeautifulSoup(response2.content, "html.parser")
          alcohol.append(soup2.find("div",attrs={"class":"info small-9 columns"}).text)
-         bottle.append(soup2.findAll("div",attrs={"class":"info small-9 columns"})[1].text)
-         category.append(soup2.findAll("div",attrs={"class":"info small-9 columns"})[2].text)
-         fromPlace.append(soup2.findAll("div",attrs={"class":"info medium-9 columns"})[3].text)
-         #winery.append(soup2.findAll("div",attrs={"class":"info medium-9 columns"})[4].text)
+         bottle.append(soup2.findAll("div",attrs={"class":"info small-9 columns"})[1].text.replace("\n", ""))
+         category.append(soup2.findAll("div",attrs={"class":"info small-9 columns"})[2].text.replace("\n", ""))
+         fromPlace.append(data.find("span", attrs = {"class":"appellation"}).text.replace("\n", ""))
+         for j in range(0,4):
+             check=soup2.findAll("div",attrs={"class":"info-label medium-7 columns"})[j].text
+             if(check=="\nVariety\n"):
+                 variety.append(soup2.findAll("div",attrs={"class":"info medium-9 columns"})[j-1].text.replace("\n", ""))
+                 break
+         for j in range(0,7):
+             check=soup2.findAll("div",attrs={"class":"info-label medium-7 columns"})[j].text
+             if(check=="\nWinery\n"):
+                 winery.append(soup2.findAll("div",attrs={"class":"info medium-9 columns"})[j-1].text.replace("\n", ""))
+                 break
 
-data={'Name':names,'Price':price,'Score':score,'Alcohol':alcohol,'Bottle':bottle,'Category':category,'From':fromPlace,'Winery':winery}
+
+
+data={'Name':names,'Price':price,'Alcohol':alcohol,'Bottle':bottle,'Category':category,'From':fromPlace,'Variety':variety,'Winery':winery,'Score':score}
 
 df = pd.DataFrame(data)
 df['Year']=df['Name'].str.findall('\d+').str[0].astype('Int64')
 df['Alcohol']=df['Alcohol'].str.findall('\d+').str[0].astype('float')
 df['Bottle']=df['Bottle'].str.findall('\d+').str[0].astype('Int64')
-print(df)
+
+os.makedirs('C:\develop\DAproject', exist_ok=True)
+df.to_csv('C:\develop\DAproject/WineQuality.csv')
+
 
