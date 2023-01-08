@@ -21,6 +21,10 @@ def remove_any_wine_not_whithorred(dataset,col):
     cln =df[(df[col] =='Red') | (df[col] =='White')]
     return cln
 
+def clean_alcohol(dataset):
+    df = dataset.copy()
+    df.drop(df[df['Alcohol'] >25].index, inplace=True)
+    return df
 
 file_name = 'C:\develop\DAproject/WineQuality.csv'
 raw_dataset = load_dataset(file_name)
@@ -28,6 +32,7 @@ cln_dataset = remove_missing_values(raw_dataset)
 cln_dataset = remove_duplicate_rows(cln_dataset)
 cln_dataset=remove_not_years(cln_dataset)
 cln_dataset=remove_any_wine_not_whithorred(cln_dataset,'Category')
+cln_dataset=clean_alcohol(cln_dataset)
 
 cln_dataset.to_csv('C:\develop\DAproject/CleanWineQuality.csv')
 
