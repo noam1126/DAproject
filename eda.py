@@ -10,6 +10,7 @@ import seaborn as sns
 def load_csv(file_name):
     return pd.read_csv(file_name,index_col=0,header=0,sep=',')
 
+
 file_name='C:\develop\DAproject/EdaWineQuality.csv'
 wine=load_csv(file_name)
 wine.to_csv('C:\develop\DAproject/EdaWineQuality.csv')
