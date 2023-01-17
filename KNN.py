@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 from sklearn.metrics import accuracy_score, make_scorer
+from sklearn import preprocessing
 
 
 def split_to_train_and_test(dataset, test_ratio, rand_state):
@@ -28,7 +29,10 @@ def calc_evaluation_val(eval_metric, y_test, y_predicted):
         return metrics.confusion_matrix(y_test, y_predicted)
 
 def find_best_k_for_KNN(X_train, y_train):
-    n={'n_neighbors':[2]}
+    k=[]
+    for i in range(3,65,2):
+        k.append(i)
+    n={'n_neighbors':k}
     clf=GridSearchCV(KNeighborsClassifier(),n,scoring=make_scorer(metrics.f1_score,greater_is_better=True))
     clf.fit(X_train, y_train)
     best_K=clf.best_params_['n_neighbors']
@@ -38,19 +42,33 @@ def find_best_k_for_KNN(X_train, y_train):
 data = pd.read_csv("C:\develop\DAproject/CleanWineQuality.csv")
 
 df=data.copy()
-X_train, X_test, y_train, y_test= split_to_train_and_test(df, 0.2, 42)
 
+df['Price']=df['Price'].str.findall('\d+').str[0].astype('Int64')
+
+#from here
+columns = ['Name','Category','From','Variety','Winery']
+
+le = preprocessing.LabelEncoder()
+for col in columns:
+    df[col] = le.fit_transform(df[col])
+#to here
+
+X_train, X_test, y_train, y_test= split_to_train_and_test(df, 0.2, 42)
 k=find_best_k_for_KNN(X_train, y_train)
 knn = KNeighborsClassifier(n_neighbors=k)
-knn.fit(X_train, y_train)
+knn.fit(X_train,y_train)
 
 y_pred = knn.predict(X_test)
 accuracy = calc_evaluation_val('accuracy',y_test, y_pred)
 print("Accuracy:", accuracy)
 
+#new_wine = [["Morgan 2020 Double L Vineyard Chardonnay (Santa Lucia Highlands)",46,13.8,750,2,"Santa Lucia Highlands, Central Coast, California, US","Chardonnay","Morgan"]]
 
-#Once you have a well-performing model, you can use it to classify new wine samples based on their attributes.
-#for example:
-#new_wine = [["Château Cos d'Estournel 2019 G d'Estournel (Médoc)",39,13.5,750,1,"Médoc, Bordeaux, France","Bordeaux-style Red Blend","Château Cos d'Estournel"]]
+#le = preprocessing.LabelEncoder()
+#columns = ['Name','Category','From','Variety','Winery']
+#for col in columns:
+#    new_wine[col] = le.fit_transform(new_wine[col])
+#print(new_wine)
+
 #prediction = knn.predict(new_wine)
-#print(prediction)
+#print("prediction:",prediction)
