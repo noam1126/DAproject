@@ -38,6 +38,11 @@ def find_best_k_for_KNN(X_train, y_train):
     best_K=clf.best_params_['n_neighbors']
     return best_K
 
+def replace_score(dataset):
+    df = dataset.copy()
+    df.loc[df.Score < 93, 'Score'] = 0
+    df.loc[df.Score >= 93, 'Score'] = 1
+    return df
 
 data = pd.read_csv("C:\develop\DAproject/CleanWineQuality.csv")
 
