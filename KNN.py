@@ -7,7 +7,7 @@ from sklearn import preprocessing
 
 
 def split_to_train_and_test(dataset, test_ratio, rand_state):
-    X = dataset.drop(columns="Score", axis=1)
+    X = dataset.drop(columns=["Name","Score"], axis=1)
     y = dataset["Score"]
     X_train, X_test, y_train, y_test = train_test_split(X.iloc[1:], y.iloc[1:], test_size=test_ratio, random_state=rand_state)
     return X_train, X_test, y_train, y_test
@@ -45,15 +45,22 @@ df=data.copy()
 
 df['Price']=df['Price'].str.findall('\d+').str[0].astype('Int64')
 
-#from here
-columns = ['Name','Category','From','Variety','Winery']
+columns = ['From','Variety','Winery']
 
 le = preprocessing.LabelEncoder()
 for col in columns:
     df[col] = le.fit_transform(df[col])
-#to here
 
+#sqr of X_train
 X_train, X_test, y_train, y_test= split_to_train_and_test(df, 0.2, 42)
+knn = KNeighborsClassifier(n_neighbors=65)
+knn.fit(X_train,y_train)
+
+y_pred = knn.predict(X_test)
+accuracy = calc_evaluation_val('accuracy',y_test, y_pred)
+print("Accuracy:", accuracy)
+
+#find the best k
 k=find_best_k_for_KNN(X_train, y_train)
 knn = KNeighborsClassifier(n_neighbors=k)
 knn.fit(X_train,y_train)
@@ -62,13 +69,3 @@ y_pred = knn.predict(X_test)
 accuracy = calc_evaluation_val('accuracy',y_test, y_pred)
 print("Accuracy:", accuracy)
 
-#new_wine = [["Morgan 2020 Double L Vineyard Chardonnay (Santa Lucia Highlands)",46,13.8,750,2,"Santa Lucia Highlands, Central Coast, California, US","Chardonnay","Morgan"]]
-
-#le = preprocessing.LabelEncoder()
-#columns = ['Name','Category','From','Variety','Winery']
-#for col in columns:
-#    new_wine[col] = le.fit_transform(new_wine[col])
-#print(new_wine)
-
-#prediction = knn.predict(new_wine)
-#print("prediction:",prediction)
