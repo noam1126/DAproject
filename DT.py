@@ -39,9 +39,41 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 decisionTree = DecisionTreeClassifier()
 decisionTree=decisionTree.fit(X_train, y_train)
 
-random_features = [random.uniform(0, 1) for _ in range(X.shape[1])]
-predicted_quality = decisionTree.predict(np.array(random_features).reshape(1,-1))
-print("Predicted quality: ", predicted_quality)
+from IPython.display import Image, display
+import pydotplus
+from scipy import misc
+
+
+def renderTree(my_tree, features):
+    # hacky solution of writing to files and reading again
+    # necessary due to library bugs
+    filename = "temp.dot"
+    with open(filename, 'w') as f:
+        f = export_graphviz(my_tree,
+                                 out_file=f,
+                                 feature_names=features,
+                                 class_names=[X, y],
+                                 filled=True,
+                                 rounded=True,
+                                 special_characters=True)
+
+    dot_data = "C:\develop\DAproject/CleanWineQuality.csv"
+    with open(filename, 'r') as f:
+        dot_data = f.read()
+
+    graph = pydotplus.graph_from_dot_data(dot_data)
+    image_name = "temp.png"
+    graph.write_png(image_name)
+    display(Image(filename=image_name))
+
+
+wine_features = ['Unnamed: 0',
+'Year', 'Score', 'Category','Alcohol','Price','Name','From','Variety','Winery']
+renderTree(decisionTree, wine_features)
+
+#random_features = [random.uniform(0, 1) for _ in range(X.shape[1])]
+#predicted_quality = decisionTree.predict(np.array(random_features).reshape(1,-1))
+#print("Predicted quality: ", predicted_quality)
 
 y_pred_train=decisionTree.predict(X_train)
 print('Accuracy on training data= ', accuracy_score(y_train, y_pred_train))
