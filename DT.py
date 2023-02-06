@@ -5,6 +5,9 @@ from sklearn.metrics import accuracy_score, make_scorer
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn import preprocessing
+from IPython.display import Image, display
+import pydotplus
+from scipy import misc
 
 data = pd.read_csv("C:\develop\DAproject/CleanWineQuality.csv")
 
@@ -38,10 +41,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 #decisionTree = DecisionTreeClassifier(max_depth=10, min_samples_leaf=20)
 decisionTree = DecisionTreeClassifier()
 decisionTree=decisionTree.fit(X_train, y_train)
-
-from IPython.display import Image, display
-import pydotplus
-from scipy import misc
 
 
 def renderTree(my_tree, features):
