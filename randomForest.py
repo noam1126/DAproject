@@ -11,18 +11,6 @@ from KNN import replace_score
 data = pd.read_csv("C:\develop\DAproject/CleanWineQuality.csv")
 df=data.copy()
 df=replace_score(df)
-#data['Price']=data['Price'].astype(str)[0].astype('float')
-#['Score']=data['Score'].str.findall('\d+').str[0].astype('float')
-#replace_map={'White':2,'Red':1}
-#data.replace(replace_map, inplace=True)
-
-# columns = ['From','Variety','Winery']
-# le = preprocessing.LabelEncoder()
-# for col in columns:
-#     data[col] = le.fit_transform(data[col])
-#
-# X = data.drop(columns=["Unnamed: 0","Name","Score"], axis=1)
-# y = data['Score']
 
 columns = ['From','Variety','Winery']
 le = preprocessing.LabelEncoder()
@@ -31,15 +19,12 @@ for col in columns:
 
 X = df.drop(columns=["Unnamed: 0","Name","Score"], axis=1)
 y = df["Score"]
-X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.2, random_state=42)
-
 
 # Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Initialize the RandomForestClassifier
 decisionTree = RandomForestClassifier()
-#decisionTree = RandomForestClassifier(n_estimators=100, max_depth=5, min_samples_leaf=10)
 
 # Train the classifier on the training set
 decisionTree.fit(X_train, y_train)
