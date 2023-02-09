@@ -53,3 +53,12 @@ y_pred = knn.predict(X_test)
 accuracy = metrics.accuracy_score(y_test, y_pred)
 print("Accuracy:", accuracy)
 
+# new_df={'Price':50,'Alcohol':14.5,'Category':1,'From':"Adelaida District, Central Coast, California, US",'Variety':"Zinfandel",'Winery':"Peachy Canyon",'Year':2019}
+# columns = ['From','Variety','Winery']
+# le = preprocessing.LabelEncoder()
+# for col in columns:
+#     new_df[col] = le.fit_transform(new_df[col])
+# new_y_pred = knn.predict(new_df)
+# print(new_y_pred)
+
+
