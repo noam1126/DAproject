@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn import preprocessing
+
 #%matplotlib inline
 
 #file_name='C:\develop\DAproject/CleanWineQuality.csv'
@@ -28,6 +30,12 @@ wine.Score_binned.describe()
 replace_map={'White':2,'Red':1}
 wine.replace(replace_map, inplace=True)
 wine.head()
+
+columns = ['From','Variety','Winery']
+le = preprocessing.LabelEncoder()
+for col in columns:
+    wine[col] = le.fit_transform(wine[col])
+wine = wine.drop(columns=["Unnamed: 0"], axis=1)
 
 #גרף עמודות של היחס בין כמות היינות לדירוגים:
 sns.countplot(x='Score_binned',data=wine)
