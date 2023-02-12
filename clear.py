@@ -2,6 +2,10 @@ import pandas as pd
 import numpy as np
 import os
 
+# We took our dataframe and started going through the data and deleted the following rows:
+# 1.	Rows with missing data
+# 2.	Rows with not make sense data (smaller or bigger then the specific parameters could get)
+
 def load_dataset(file_name):
     return pd.read_csv(file_name)
 
