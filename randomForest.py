@@ -8,6 +8,15 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn import preprocessing
 from KNN import replace_score
 
+#The code performs the following steps:
+# 1.	Loads the wine quality dataset from the CSV file into the pandas dataframe. Later, replaces the "Score" column in the dataframe with binary values (0 or 1) based on whether the score is less than or equal to 95.
+# 2.	Encodes the categorical columns "From", "Variety", and "Winery" to numbers so we can use the data properly.
+# 3.	Trains the classifier on the training dataset.
+# 4.	Uses the trained classifier to make predictions on the test dataset.
+# 5.	Evaluates the accuracy of the predictions using accuracy_score method.
+# 6.	Finally, the code outputs the predicted wine quality and the accuracy of the predictions.
+# In addition, the accuracy here was very high too.
+
 data = pd.read_csv("C:\develop\DAproject/CleanWineQuality.csv")
 df=data.copy()
 df=replace_score(df)

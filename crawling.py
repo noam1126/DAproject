@@ -3,7 +3,15 @@ import requests
 import random
 import pandas as pd
 import os
-import re
+
+# At the begging we did crawling to our source website.
+# It run on 370 pages so we will have enough variety of wines to our dataframe.
+# Then run on every wine's page and crawled the relevant parameters.
+# Every parameter we put into a col of the dataframe according to the list he belong.
+# Our crawling is divided to 2 parts:
+#   1.	From every wine list page we took the following parameters- name, price and score.
+#   2.	From every specific wine page we took the following parameters- from where, category, bottle size, alcohol, winery and           variety.
+
 
 user_agent = user_agents_list = [
     'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',

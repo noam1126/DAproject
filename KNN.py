@@ -6,6 +6,14 @@ from sklearn.metrics import accuracy_score, make_scorer,f1_score
 from sklearn import preprocessing
 import math
 
+# For the best accuracy we use the KNN method to classify wine quality based on various features. The code performs the following steps:
+# 1.	Loads the wine quality dataset from the CSV file into the pandas dataframe. Later, replaces the "Score" column in the dataframe with binary values (0 or 1) based on whether the score is less than or equal to 95.
+# 2.	Encodes the categorical columns "From", "Variety", and "Winery" to numbers so we can use the data properly.
+# 3.	We use a the function "find_best_k_for_KNN" to determine the best value of "k" (the number of nearest neighbors to use) for the KNN.
+# 4.	Then fits a KNN model to the training data using the best value of k and makes predictions on the testing data.
+# 5.	Finally, it calculates the accuracy of the KNN model by comparing the predicted values to the actual values in the testing data.
+# At the end, the KNN provided us the most accurate predictions, and so likely to be right.
+
 def find_best_k_for_KNN(X_train, y_train):
     k=[]
     sqr=math.sqrt(X_train.shape[0])
