@@ -3,6 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn import preprocessing
+<<<<<<< HEAD
+=======
+#%matplotlib inline
+>>>>>>> origin/develop
 
 # Heatmap- the colors represent the connection between two features. The purpose of the map is when it closer to one the connection is stronger.
 # Countplot- show that most of the wines get high score, so the average is 85-95.
@@ -27,7 +31,11 @@ columns = ['From','Variety','Winery']
 le = preprocessing.LabelEncoder()
 for col in columns:
     wine[col] = le.fit_transform(wine[col])
+<<<<<<< HEAD
 wine=wine.drop(columns=["Unnamed: 0",'Unnamed: 0.1'], axis=1)
+=======
+wine=wine.drop(columns=["Unnamed: 0"], axis=1)
+>>>>>>> origin/develop
 
 sns.countplot(x='Score_binned',data=wine)
 plt.title('amount of wines according to the score:')
