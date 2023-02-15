@@ -33,13 +33,13 @@ y = df["Score"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Initialize the RandomForestClassifier
-decisionTree = RandomForestClassifier()
+randomForest = RandomForestClassifier()
 
 # Train the classifier on the training set
-decisionTree.fit(X_train, y_train)
+randomForest.fit(X_train, y_train)
 
 # Use the model to make predictions on the test set
-predicted_quality = decisionTree.predict(X_test)
+predicted_quality = randomForest.predict(X_test)
 
 # Print the predicted quality
 print("Predicted quality: ", predicted_quality)
